@@ -1,0 +1,15 @@
+Raylib for game
+
+Rules based AI. How do I make an AI that actually plays well?
+Block dominoes:
+1 - place doubles
+2 - place high pip count tiles
+3 - place tiles with multiple of same suit in hand if possible
+4 - remember which tiles opponent draws on and play tiles with that suit
+5 - deck contains 8 tiles which contain at least one of each value, 
+    count the number of tiles on board and in hand with one of each value to 
+    predict how many of each value is in opponents hand or boneyard.
+    Count the number of each value tile in your hand + the number of that value tile
+    on the board. Place the value tile from your hand that has the highest occurences in hand and board.
+
+Reinforcement learning model
