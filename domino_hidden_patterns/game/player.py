@@ -24,7 +24,7 @@ class Player:
     
     
     def drawFromDeck(self):
-        if self.deck.isDeckEmpty:
+        if self.deck.isDeckEmpty():
             print("Attempted to draw from deck. Deck is empty.")
             return
         
