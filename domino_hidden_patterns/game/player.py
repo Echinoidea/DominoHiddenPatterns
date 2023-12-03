@@ -8,6 +8,11 @@ class Player:
     def __init__(self, deck: Deck):
         self.deck = deck
         self.hand = self.initialDrawFromDeck(7)  # Change this to be 7 if two players, 5 if more than 2 players
+        self.points = 0
+    
+    
+    def printHand(self):
+        print([i.__str__() for i in p.hand])
     
     
     def initialDrawFromDeck(self, count: int) -> List[Tile]:
@@ -31,6 +36,14 @@ class Player:
             self.hand.remove(tile)
         except ValueError as e:
             print("That Tile is not in this hand.")
+    
+    
+    def isHandEmpty(self):
+        return len(self.hand) <= 0
+    
+    
+    def countTilesInHand(self):
+        return len(self.hand)
     
     
     def countPipsInHand(self):

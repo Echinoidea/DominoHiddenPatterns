@@ -72,20 +72,33 @@ class Snake:
         """
         assert side in [Orientation.LEFT, Orientation.RIGHT], 'Side to add Tile to must be LEFT or RIGHT'
         
+        lhsPip = self.getEndTile(Orientation.LEFT).pip1
+        rhsPip = self.getEndTile(Orientation.RIGHT).pip2
+        
+        if tile.pip1 not in [lhsPip, rhsPip] and tile.pip2 not in [lhsPip, rhsPip]:
+            print("There are no pips on the endpoints that match those of the new tile.")
+            return
+        
         if side is Orientation.LEFT:
             # Check which pip of new tile matches the pip1 of the leftmost tile and change new tile orientation accordingly
-            if tile.pip1 == self.getEndTile(Orientation.LEFT).pip2:
-                tile.orientation = Orientation.LEFT
+            if tile.pip1 == lhsPip:
+                tile.rotate(Orientation.RIGHT)
+            elif tile.pip2 == lhsPip:
+                tile.rotate(Orientation.LEFT)
             else:
-                tile.orientation = Orientation.RIGHT
+                print("Tile {} cannot match the leftmost tile's pips.".format(tile))
+                return
             
             self.snake[self.getEndKey(Orientation.LEFT) - 1] = tile
         else:
-            if tile.pip1 == self.getEndTile(Orientation.RIGHT).pip2:
-                tile.orientation = Orientation.LEFT
+            if tile.pip1 == rhsPip:
+                tile.rotate(Orientation.LEFT)
+            elif tile.pip2 == rhsPip:
+                tile.rotate(Orientation.RIGHT)
             else:
-                tile.orientation = Orientation.RIGHT
-            
+                print("Tile {} cannot match the rightmost tile's pips.".format(tile))
+                return
+                
             self.snake[self.getEndKey(Orientation.RIGHT) + 1] = tile
 
         self.snake = dict(sorted(self.snake.items()))
@@ -94,10 +107,10 @@ class Snake:
 s = Snake()
 d = Deck()
 # s.snake[-1] = Tile(1, 2)
-s.snake[0] = Tile(2, 2)
+s.snake[0] = Tile(2, 1)
 # s.snake[1] = Tile(3, 4)
 print(s.getEndTile(Orientation.LEFT))
 
 print(s.getEndTile(Orientation.RIGHT))
-s.addTile(Tile(1, 3), Orientation.RIGHT )
+s.addTile(Tile(2, 3), Orientation.LEFT)
 print(s.snakeContentDebug())

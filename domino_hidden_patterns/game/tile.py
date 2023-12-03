@@ -5,10 +5,28 @@ class Tile:
     def __init__(self, pip1: int, pip2: int):
         self.pip1 = pip1    
         self.pip2 = pip2
+        
+        self.Orientation: Orientation
+        self.Orientation = None
     
+    
+    def rotate(self, targetOrientation: Orientation):
+        if self.Orientation == targetOrientation:
+            return
+        
+        pip1 = self.pip1
+        pip2 = self.pip2
+        self.pip1 = pip2
+        self.pip2 = pip1
+        
+        if self.Orientation == Orientation.LEFT:
+            self.Orientation = Orientation.RIGHT
+        elif self.Orientation == Orientation.RIGHT:
+            self.Orientation = Orientation.LEFT
+
     
     def __str__(self):
-        return 'Tile[{}, {}]'.format(self.pip1, self.pip2)
+        return '[{}, {}]'.format(self.pip1, self.pip2)
     
     
     def __eq__(self, __value: object) -> bool:
