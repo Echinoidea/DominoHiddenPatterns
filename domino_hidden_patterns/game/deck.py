@@ -76,7 +76,7 @@ class Deck:
             bool: True if the deck dict is empty. Else, False.
         """
         
-        return len(d.deck) <= 0
+        return len(self.deck) <= 0
     
     
     def deleteTile(self, key: int):
