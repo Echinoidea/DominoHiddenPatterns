@@ -6,18 +6,30 @@ class Tile:
         self.pip1 = pip1    
         self.pip2 = pip2
         
-        self.Orientation: Orientation
-        self.Orientation = None
+        # self.Orientation: Orientation
+        # self.Orientation = None
+        
+        self.Orientation = Orientation.LEFT
     
     
     def rotate(self, targetOrientation: Orientation):
+        """'Rotate' this Tile by swapping the values of pip1 and pip2 and the orientation.
+
+        Args:
+            targetOrientation (Orientation): LEFT or RIGHT. Orientation is determined by the position
+            of pip1. E.g. Orientation.LEFT means pip1 is on the LEFT.
+        """
+        
         if self.Orientation == targetOrientation:
+            print("Cannot rotate Tile. Tile's orientation is already {}".format(targetOrientation.__str__()))
             return
         
         pip1 = self.pip1
         pip2 = self.pip2
         self.pip1 = pip2
         self.pip2 = pip1
+        
+        # self.Orientation = Orientation.LEFT if self.Orientation is not Orientation.LEFT else Orientation.RIGHT
         
         if self.Orientation == Orientation.LEFT:
             self.Orientation = Orientation.RIGHT

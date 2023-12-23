@@ -11,5 +11,5 @@ class Orientation(Enum):
     LEFT = auto()
     
     def __str__(self) -> str:
-        return self.value
+        return self.name
     

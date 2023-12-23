@@ -7,9 +7,6 @@ from enums.orientations import Orientation
 
 class Deck:
     
-    deckOrigin = {}
-    deck = {}
-    
     def __init__(self):
         self.deckOrigin = self.generateDeck()
         self.deck = self.deckOrigin
@@ -113,7 +110,6 @@ class Deck:
             Tile: The randomly selected Tile from the deck dict.
         """
         
-        # randIndex = randint(0, len(self.deck) - 1)
         randomKey, _ = choice(list(self.deck.items()))
         return self.deck.pop(randomKey, None)
         
@@ -123,12 +119,12 @@ class Deck:
     
     
         
-d = Deck()
-d.printDeckDebug()
-d.deck = d.shuffleDeck()
-d.printDeckDebug()
-# print(d.isTileInDeck(Tile(1,6,Orientation.LEFT)))
-for i in range(len(d.deck)):
-    print(d.deleteTile(i))
+# d = Deck()
+# d.printDeckDebug()
+# d.deck = d.shuffleDeck()
+# d.printDeckDebug()
+# # print(d.isTileInDeck(Tile(1,6,Orientation.LEFT)))
+# for i in range(len(d.deck)):
+#     print(d.deleteTile(i))
     
-d.printDeckDebug()
+# d.printDeckDebug()
