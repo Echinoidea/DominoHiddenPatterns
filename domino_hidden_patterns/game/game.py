@@ -7,6 +7,11 @@ from snake import Snake
 from collections import namedtuple
 from typing import NamedTuple
 
+class RoundWinner(NamedTuple):
+    player: Player
+    pointsToGain: int
+
+
 class Game:
     
     def __init__(self):
@@ -19,17 +24,17 @@ class Game:
         self.scoreToWin = 40
     
     
-    def getRoundWinner(self) -> NamedTuple:
+    def getRoundWinner(self) -> RoundWinner:
         """Check if either Player has no Tiles left in their hand. If so, return a
         named tuple containing the winning Player obj and the total number of pips
         in the opponents hand for score calculation.
 
         Returns:
-            NamedTuple: NamedTuple containing the winning Player and the total 
+            RoundWinner: Custom NamedTuple containing the winning Player and the total 
             number of pips in the opposing Player's hand.
         """
         
-        winner = namedtuple("Winner", ['player', 'pointsToGain'])
+        winner: RoundWinner
         
         if self.player1.countTilesInHand <= 0:
             return winner(self.player1, self.player2.countPipsInHand())
@@ -38,8 +43,12 @@ class Game:
         
         
     def getMatchWinner(self) -> Player:
-        # if self
-        pass
+        winner = self.getRoundWinner().player
+        
+        if winner.points >= self.scoreToWin:
+            return winner
+        else:
+            return
     
     
     def mustDraw(self, player: Player) -> bool:

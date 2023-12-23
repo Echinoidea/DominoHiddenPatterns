@@ -24,6 +24,7 @@ class UserGame:
         userMove = userMove.split(';')
         userMove = (int(userMove[0][1]), int(userMove[0][3]), userMove[1])
         
+        
         # Check if this tile can be added, if not ask again.
         # If can be added, add to snake on side
         # Check if win
