@@ -13,3 +13,8 @@ Block dominoes:
     on the board. Place the value tile from your hand that has the highest occurences in hand and board.
 
 Reinforcement learning model
+
+
+Board:
+    - Domino snake adds items from 'center' 
+    - 
