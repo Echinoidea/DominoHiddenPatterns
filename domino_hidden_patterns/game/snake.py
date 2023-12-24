@@ -17,7 +17,7 @@ class Snake:
             deck (Deck): The Deck to draw from.
         """
         
-        self.snake[0] = deck.drawRandomPair()
+        self.snake[0] = deck.drawRandomTile()
     
     
     def getEndKey(self, side: Orientation) -> int:
@@ -72,6 +72,48 @@ class Snake:
         return items
     
     
+    def printSnakeItems(self):
+        """Neatly print the items of the snake dict.
+        """
+        
+        items = []
+        
+        for _, v in self.snake.items():
+            items.append('{}'.format(v))
+        
+        print(' '.join(items))
+    
+    
+    def canAddTileLeft(self, tile: Tile) -> bool:
+        """Check if either pip of the given Tile matches the left endpoint of this Snake. 
+
+        Args:
+            tile (Tile): The Tile to check if it can be added to the left endpoint.
+
+        Returns:
+            bool: True if tile.pip1 or tile.pip2 == left endpoint pip1
+        """
+        
+        lhsPip = self.getEndTile(Orientation.LEFT).pip1
+        
+        return tile.pip1 == lhsPip or tile.pip2 == lhsPip
+    
+    
+    def canAddTileRight(self, tile: Tile) -> bool:
+        """Check if either pip of the given Tile matches the right endpoint of this Snake. 
+
+        Args:
+            tile (Tile): The Tile to check if it can be added to the right endpoint.
+
+        Returns:
+            bool: True if tile.pip1 or tile.pip2 == right endpoint pip2
+        """
+        
+        rhsPip = self.getEndTile(Orientation.RIGHT).pip2
+        
+        return tile.pip1 == rhsPip or tile.pip2 == rhsPip
+    
+    
     def canAddTile(self, tile: Tile) -> bool:
         """Check if the given Tile matches either endpoint of this Snake.
 
@@ -82,10 +124,7 @@ class Snake:
             bool: True if one of the pips of tile matches either endpoint of this Snake.
         """
         
-        lhsPip = self.getEndTile(Orientation.LEFT).pip1
-        rhsPip = self.getEndTile(Orientation.RIGHT).pip2
-        
-        return tile.pip1 in [lhsPip, rhsPip] or tile.pip2 in [lhsPip, rhsPip]
+        return self.canAddTileLeft(tile) or self.canAddTileRight(tile)
     
     
     def addTile(self, tile: Tile, side: Orientation):
@@ -129,14 +168,3 @@ class Snake:
 
         self.snake = dict(sorted(self.snake.items()))
 
-
-# s = Snake()
-# d = Deck()
-# # s.snake[-1] = Tile(1, 2)
-# s.snake[0] = Tile(2, 1)
-# # s.snake[1] = Tile(3, 4)
-# print(s.getEndTile(Orientation.LEFT))
-
-# print(s.getEndTile(Orientation.RIGHT))
-# s.addTile(Tile(2, 3), Orientation.LEFT)
-# print(s.snakeContentDebug())

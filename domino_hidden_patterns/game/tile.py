@@ -21,7 +21,7 @@ class Tile:
         """
         
         if self.Orientation == targetOrientation:
-            print("Cannot rotate Tile. Tile's orientation is already {}".format(targetOrientation.__str__()))
+            # print("Cannot rotate Tile. Tile's orientation is already {}".format(targetOrientation.__str__()))
             return
         
         pip1 = self.pip1
@@ -52,10 +52,3 @@ class Tile:
         """
         return self.pip1 == __value.pip1 and self.pip2 == __value.pip2 or self.pip1 == __value.pip2 and self.pip2 == __value.pip1
     
-
-# t1 = Tile(5, 1, Orientation.LEFT)
-# t2 = Tile(1, 5, Orientation.LEFT)
-# t3 = Tile(1, 5, Orientation.LEFT)
-# t4 = Tile(1, 2, Orientation.LEFT)
-
-# print(t1 == t4)
