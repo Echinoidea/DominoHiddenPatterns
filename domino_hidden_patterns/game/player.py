@@ -1,7 +1,10 @@
 from tile import Tile
 from deck import Deck
 from exceptions.gameExceptions import DeckEmptyException
+<<<<<<< HEAD
 from exceptions.gameExceptions import HandEmptyException
+=======
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
 
 from typing import List
 
@@ -14,6 +17,13 @@ class Player:
         self.points = 0
     
     
+<<<<<<< HEAD
+=======
+    def printHand(self):
+        print([i.__str__() for i in self.hand])
+    
+    
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
     def initialDrawFromDeck(self, count: int) -> List[Tile]:
         """Draw 'count' Tiles from the deck. This function is called at the start of a game for each player.
 
@@ -46,7 +56,24 @@ class Player:
         
         self.hand.append(drawnTile)
         
+<<<<<<< HEAD
         
+=======
+    
+    def removeTileFromHand(self, tile: Tile):
+        """Remove a Tile from this Player's hand.
+
+        Args:
+            tile (Tile): The Tile to remove.
+        """
+        
+        try:
+            self.hand.remove(tile)
+        except ValueError as e:
+            print("That Tile is not in this hand.")
+    
+    
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
     def isHandEmpty(self) -> bool:
         """Is this Player's hand empty
 
@@ -57,6 +84,7 @@ class Player:
         return len(self.hand) <= 0
     
     
+<<<<<<< HEAD
     def printHand(self):
         
         try:
@@ -89,6 +117,8 @@ class Player:
             print("That Tile is not in this hand.")
     
     
+=======
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
     def countTilesInHand(self) -> int:
         """Return the number of Tiles in this Player's hand.
 
@@ -96,6 +126,7 @@ class Player:
             int: Length of Player.hand
         """
         
+<<<<<<< HEAD
         try:
             if self.isHandEmpty():
                 raise HandEmptyException
@@ -103,6 +134,8 @@ class Player:
             print(e.args)
             return
         
+=======
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
         return len(self.hand)
     
     
@@ -114,12 +147,17 @@ class Player:
             int: The total number of pips in this Player's hand.
         """
         
+<<<<<<< HEAD
         try:
             if self.isHandEmpty():
                 raise HandEmptyException
         except HandEmptyException as e:
             print(e.args)
             return
+=======
+        if len(self.hand) <= 0:
+            return 0
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
         
         total = 0
         

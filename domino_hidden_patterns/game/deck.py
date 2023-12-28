@@ -4,7 +4,10 @@ from random import shuffle, randint, choice
 
 from tile import Tile
 from enums.orientations import Orientation
+<<<<<<< HEAD
 from exceptions.gameExceptions import DeckEmptyException
+=======
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
 
 class Deck:
     
@@ -17,11 +20,16 @@ class Deck:
         """Print the deck list in a readable fashion.
         """
         
+<<<<<<< HEAD
         try:
             if self.isDeckEmpty():
                 raise DeckEmptyException
         except DeckEmptyException as e:
             print(e.args)
+=======
+        if self.isDeckEmpty():
+            print("Trying to print deck: Deck is Empty")
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
         
         for tile in self.deck:
             print(tile.__str__(), end=', ')
@@ -37,12 +45,15 @@ class Deck:
             bool: Returns True if a Tile with the same pip values are in the deck list, else False.
         """
         
+<<<<<<< HEAD
         try:
             if self.isDeckEmpty():
                 raise DeckEmptyException
         except DeckEmptyException as e:
             print(e.args)
         
+=======
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
         for t in self.deck:
             if t == tile:
                 return True
@@ -73,12 +84,15 @@ class Deck:
             List[Tile]: The shuffled deck dict.
         """
         
+<<<<<<< HEAD
         try:
             if self.isDeckEmpty():
                 raise DeckEmptyException
         except DeckEmptyException as e:
             print(e.args)
         
+=======
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
         return shuffle(self.deck)
     
     
@@ -112,12 +126,15 @@ class Deck:
             Tile: A randomly selected Tile from the Deck list
         """
         
+<<<<<<< HEAD
         try:
             if self.isDeckEmpty():
                 raise DeckEmptyException
         except DeckEmptyException as e:
             print(e.args)
         
+=======
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
         randIndex = randint(0, len(self.deck) - 1)
         return self.deck[randIndex]
     
@@ -129,11 +146,14 @@ class Deck:
             Tile: The randomly selected Tile from the deck list.
         """
         
+<<<<<<< HEAD
         try:
             if self.isDeckEmpty():
                 raise DeckEmptyException
         except DeckEmptyException as e:
             print(e.args)
         
+=======
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
         return self.deck.pop(randint(0, len(self.deck) - 1))
         

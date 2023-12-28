@@ -3,7 +3,10 @@ from typing import Dict
 from tile import Tile
 from deck import Deck
 from enums.orientations import Orientation
+<<<<<<< HEAD
 from exceptions.gameExceptions import NoCompatibleTilesException
+=======
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
 
 class Snake:
     
@@ -141,12 +144,17 @@ class Snake:
         lhsPip = self.getEndTile(Orientation.LEFT).pip1
         rhsPip = self.getEndTile(Orientation.RIGHT).pip2
         
+<<<<<<< HEAD
         
         try:
             if not self.canAddTile(tile):
                 raise NoCompatibleTilesException
         except NoCompatibleTilesException as e:
             print(e.args)
+=======
+        if not self.canAddTile(tile):
+            print("There are no pips on the endpoints that match those of the new tile.")
+>>>>>>> b9088d2f784a13f56dde60594e2b031814bbb9ee
             return
         
         if side is Orientation.LEFT:
