@@ -9,11 +9,11 @@ class HandEmptyException(Exception):
     """This Player's hand is empty."""
     
     def __init__(self, message="This Player's hand is empty."):
-        super(DeckEmptyException, self).__init__(message)
+        super(HandEmptyException, self).__init__(message)
 
 
 class NoCompatibleTilesException(Exception):
     """There are no pips on the Snake endpoints that match those of the new Tile."""
     
     def __init__(self, message='There are no pips on the Snake endpoints that match those of the new Tile.'):
-        super(DeckEmptyException, self).__init__(message)
+        super(NoCompatibleTilesException, self).__init__(message)

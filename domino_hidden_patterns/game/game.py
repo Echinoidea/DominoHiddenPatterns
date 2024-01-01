@@ -16,10 +16,17 @@ class Game:
     
     def __init__(self):
         self.playerScores = {'1': 0, '2': 0}  # Retain total points gained over rounds
-        self.scoreToWin = 80
+        self.scoreToWin = 10
         
         self.roundCounter = 0
         self.startRound()
+        
+        # Variables for encoder. Not the best solution, but it's ok
+        self.playerDrawCountsTotal = {'1': 0, '2': 0}
+        self.playerPassCountsTotal = {'1': 0, '2': 0}
+
+        self.drawCountCurrent = 0
+        self.hasPassedThisTurn = False
     
     
     def startRound(self):
@@ -37,8 +44,10 @@ class Game:
         self.snake = Snake()
         self.snake.setStartPiece(self.deck)
         
-        self.turn = self.getInitialTurn() if self.roundCounter <= 0 else self.getLastRoundWinnerId()
         self.roundCounter += 1
+        self.initialTurn = self.getInitialTurn()
+        self.turn = self.initialTurn if self.roundCounter <= 1 else self.getLastRoundWinnerId()
+        
         
     
     def getInitialTurn(self) -> int:
@@ -101,11 +110,11 @@ class Game:
         
         if self.player1.countTilesInHand() <= 0:
             pointsToGain = self.player2.countPipsInHand()
-            self.playerScores[1] += pointsToGain
+            self.playerScores['1'] += pointsToGain
             return RoundWinner(self.player1, pointsToGain)
         else:
             pointsToGain = self.player1.countPipsInHand()
-            self.playerScores[2] += pointsToGain
+            self.playerScores['2'] += pointsToGain
             return RoundWinner(self.player2, pointsToGain)
         
         
@@ -186,10 +195,18 @@ class Game:
             player (Player): The Player who needs to draw Tiles.
         """
         
+        self.drawCountCurrent = 0
+        self.hasPassedThisTurn = False
+        
         while self.mustDraw(player):
             if self.deck.isDeckEmpty():
                 # print("Deck is empty. Turn must be skipped.")
+                self.playerPassCountsTotal[str(self.turn)] += 1
+                self.hasPassedThisTurn = True
                 return
+            
+            self.playerDrawCountsTotal[str(self.turn)] += 1
+            self.drawCountCurrent += 1
             
             player.drawFromDeck()
             player.printHand()

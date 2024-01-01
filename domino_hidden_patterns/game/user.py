@@ -4,6 +4,7 @@ from deck import Deck
 from snake import Snake
 from tile import Tile
 from enums.orientations import Orientation
+from encoder import Encoder
 
 from typing import Tuple
 
@@ -91,16 +92,29 @@ class UserGameText:
 
 
 ug = UserGameText()
+encoder = Encoder()
 
 while not ug.game.checkMatchWin():
     ug.printRoundInfo()
     ug.game.startRound()
     while not ug.game.checkRoundWin():
         if ug.game.turn == 1:
+            encoder.recordTurnStartData(ug.game)
             ug.printTurn(ug.game.player1)
             ug.inputTurn(ug.game.player1)
+            encoder.recordTurnEndData(ug.game)
         else:
+            encoder.recordTurnStartData(ug.game)
             ug.printTurn(ug.game.player2)
             ug.inputTurn(ug.game.player2)
+            encoder.recordTurnEndData(ug.game)
+        
         
         ug.game.skipTurn()
+    encoder.recordRoundData(ug.game)
+encoder.recordMatchData(ug.game)
+
+encoder.saveDfToCSV(encoder.matchDf, 'match.csv')
+encoder.saveDfToCSV(encoder.roundDf, 'round.csv')
+encoder.saveDfToCSV(encoder.turnStartDf, 'turnStart.csv')
+encoder.saveDfToCSV(encoder.turnEndDf, 'turnEnd.csv')
