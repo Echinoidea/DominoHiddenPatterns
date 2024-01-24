@@ -150,6 +150,7 @@ class Encoder:
         roundData["player2Points"] = game.player2.points
         roundData["initialTile"] = self.encodeTile(game.snake.snake[0])
         roundData["snakeLayout"] = self.encodeSnakeLayout(game.snake)
+        roundData["winner"] = game.getRoundWinner().player.id
         
         row = pd.DataFrame([roundData])
         self.roundDf = pd.concat([self.roundDf, row], ignore_index=True)

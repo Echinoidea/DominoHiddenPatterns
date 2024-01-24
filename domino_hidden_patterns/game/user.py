@@ -126,7 +126,7 @@ class UserGameText:
 
 encoder = Encoder()
     
-for i in range(100):
+for i in range(10):
     ug = UserGameText()
     
     while not ug.game.checkMatchWin():
