@@ -5,6 +5,7 @@ from snake import Snake
 from tile import Tile
 from enums.orientations import Orientation
 from encoder import Encoder
+from computer import Computer
 
 from typing import Tuple
 
@@ -14,7 +15,7 @@ class UserGameText:
     
     def __init__(self):
         self.game = Game()
-        
+    
     
     def printRoundInfo(self):
         print("====================ROUND {}====================".format(self.game.roundCounter))
@@ -64,7 +65,7 @@ class UserGameText:
     
     def inputTurn(self, player: Player):
         
-        if self.game.mustDraw(player) and self.game.deck.isDeckEmpty(): 
+        if self.game.mustSkipTurn(player): 
             print("Deck is empty and Player{0} has no valid moves. Player {0} must skip their turn.".format(player.id))
             self.game.skipTurn()
             return
@@ -89,30 +90,71 @@ class UserGameText:
             if self.game.checkMatchWin():
                 matchWinner = self.game.getMatchWinner()
                 print("This match has been won by Player {} with {} points!".format(matchWinner.id, matchWinner.points))
+    
+    
+    def inputTurnComp(self, player: Player, computer: Computer):
+        if self.game.mustDraw(player) and not self.game.deck.isDeckEmpty():
+            print("Player {} has no playable Tiles in hand. Must draw until there is a valid Tile.".format(player.id))
+            self.game.drawUntilValidTile(player)
+            
+        if self.game.mustSkipTurn(player): 
+            print("Deck is empty and Player {0} has no valid moves. Player {0} must skip their turn.".format(player.id))
+            return
+        
+        
+        
+        # validMove = self.getValidMove()
+        userTile, side = computer.getFirstPlayableTile()
+        
+        self.game.playTile(player, userTile, side)
+        # print("Successfully added [{}, {}] to the {}".format(userTile.pip1, userTile.pip2, side))
+        
+        # Win check
+        if self.game.checkRoundWin():
+            roundWinner = self.game.getRoundWinner()
+            roundWinner.player.points += roundWinner.pointsToGain
+            print("This round won by Player {}. Gained {} points.".format(
+                roundWinner.player.id, roundWinner.pointsToGain))
+            if self.game.checkMatchWin():
+                matchWinner = self.game.getMatchWinner()
+                print("This match has been won by Player {} with {} points!".format(matchWinner.id, matchWinner.points))
+        
+        
+        
 
 
-ug = UserGameText()
+
 encoder = Encoder()
-
-while not ug.game.checkMatchWin():
-    ug.printRoundInfo()
-    ug.game.startRound()
-    while not ug.game.checkRoundWin():
-        if ug.game.turn == 1:
-            encoder.recordTurnStartData(ug.game)
-            ug.printTurn(ug.game.player1)
-            ug.inputTurn(ug.game.player1)
-            encoder.recordTurnEndData(ug.game)
-        else:
-            encoder.recordTurnStartData(ug.game)
-            ug.printTurn(ug.game.player2)
-            ug.inputTurn(ug.game.player2)
-            encoder.recordTurnEndData(ug.game)
+    
+for i in range(100):
+    ug = UserGameText()
+    
+    while not ug.game.checkMatchWin():
+        ug.game.startRound()
+        ug.printRoundInfo()
         
+        computer1 = Computer(ug.game.player1, ug.game)
+        computer2 = Computer(ug.game.player2, ug.game)
         
-        ug.game.skipTurn()
-    encoder.recordRoundData(ug.game)
-encoder.recordMatchData(ug.game)
+        while not ug.game.checkRoundWin():
+            if ug.game.turn == 1:
+                encoder.recordTurnStartData(ug.game)
+                ug.printTurn(ug.game.player1)
+                ug.inputTurnComp(ug.game.player1, computer1)
+                encoder.recordTurnEndData(ug.game)
+            else:
+                encoder.recordTurnStartData(ug.game)
+                ug.printTurn(ug.game.player2)
+                ug.inputTurnComp(ug.game.player2, computer2)
+                
+                encoder.recordTurnEndData(ug.game)
+            if ug.game.isTie():
+                print("Neither player can draw or place any tiles therefore this round is a tie.")
+                break
+            ug.game.skipTurn()
+            
+        encoder.recordRoundData(ug.game)
+    encoder.recordMatchData(ug.game)
 
 encoder.saveDfToCSV(encoder.matchDf, 'match.csv')
 encoder.saveDfToCSV(encoder.roundDf, 'round.csv')

@@ -129,6 +129,7 @@ class Encoder:
         matchData["player1PassCount"] = game.playerPassCountsTotal['1']
         matchData["player2PassCount"] = game.playerPassCountsTotal['2']
         matchData["roundCount"] = game.roundCounter
+        matchData["winner"] = game.getMatchWinner().id
         
         row = pd.DataFrame([matchData])
         self.matchDf = pd.concat([self.matchDf, row], ignore_index=True)
@@ -201,7 +202,7 @@ class Encoder:
     
     def saveDfToJSON(self, df: pd.DataFrame, path: str):
         try:
-            with open(path, 'w') as f:
+            with open(path, 'a') as f:
                 f.write(str(df.to_json(path, orient='records', lines=True)))
         except Exception as e:
             print(e.args)
@@ -209,7 +210,7 @@ class Encoder:
     
     def saveDfToCSV(self, df: pd.DataFrame, path: str):
         try:
-            with open(path, 'w') as f:
+            with open(path, 'a') as f:
                 f.write(str(df.to_csv(path, encoding='utf-8', index=False)))
         except Exception as e:
             print(e.args)

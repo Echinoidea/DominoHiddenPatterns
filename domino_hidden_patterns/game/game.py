@@ -16,10 +16,19 @@ class Game:
     
     def __init__(self):
         self.playerScores = {'1': 0, '2': 0}  # Retain total points gained over rounds
-        self.scoreToWin = 10
+        self.scoreToWin = 30
         
         self.roundCounter = 0
-        self.startRound()
+        self.deck = Deck()
+        
+        self.player1 = Player(self.deck, '1')
+        # self.player1.points = self.playerScores['1']
+        
+        self.player2 = Player(self.deck, '2')
+        # self.player2.points = self.playerScores['2']
+        
+        self.snake = Snake()
+        self.turn = 1
         
         # Variables for encoder. Not the best solution, but it's ok
         self.playerDrawCountsTotal = {'1': 0, '2': 0}
@@ -38,6 +47,7 @@ class Game:
         
         self.player1 = Player(self.deck, '1')
         self.player1.points = self.playerScores['1']
+        
         self.player2 = Player(self.deck, '2')
         self.player2.points = self.playerScores['2']
         
@@ -95,7 +105,7 @@ class Game:
             bool: True if either Player.points >= this Game's scoreToWin.
         """
         
-        return self.player1.points >= self.scoreToWin or self.player2.points >= self.scoreToWin
+        return self.playerScores['1'] >= self.scoreToWin or self.playerScores['2'] >= self.scoreToWin
     
     
     def getRoundWinner(self) -> RoundWinner:
@@ -126,12 +136,17 @@ class Game:
             Player: The Player that has won the match.
         """
         
-        winner = self.getRoundWinner().player
+        if self.playerScores['1'] >= self.scoreToWin:
+            return self.player1
+        elif self.playerScores['2'] >= self.scoreToWin:
+            return self.player2
         
-        if winner.points >= self.scoreToWin:
-            return winner
-        else:
-            return
+        # winner = self.getRoundWinner().player
+        
+        # if winner.points >= self.scoreToWin:
+        #     return winner
+        # else:
+        #     return
         
         
     def getLastRoundWinnerId(self) -> int:
@@ -165,7 +180,12 @@ class Game:
         """Swap the value of turn from 1 to 2, or vice versa.
         """
         
-        self.turn = 1 if self.turn == 2 else 2
+        # self.turn = 1 if self.turn == 2 else 2
+        self.drawCountCurrent = 0
+        if self.turn == 1:
+            self.turn = 2
+        else:
+            self.turn = 1
     
     
     def mustDraw(self, player: Player) -> bool:
@@ -184,6 +204,17 @@ class Game:
                 return False
             else:
                 continue
+        
+        return True
+
+    
+    def mustSkipTurn(self, player: Player) -> bool:
+        if not self.deck.isDeckEmpty():
+            return False
+        
+        for tile in player.hand:
+            if self.snake.canAddTile(tile):
+                return False
         
         return True
 
@@ -210,3 +241,7 @@ class Game:
             
             player.drawFromDeck()
             player.printHand()
+            
+    
+    def isTie(self):
+        return self.mustSkipTurn(self.player1) and self.mustSkipTurn(self.player2)
