@@ -16,7 +16,7 @@ class Game:
     
     def __init__(self):
         self.playerScores = {'1': 0, '2': 0}  # Retain total points gained over rounds
-        self.scoreToWin = 30
+        self.scoreToWin = 100
         
         self.roundCounter = 0
         self.deck = Deck()

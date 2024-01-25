@@ -129,6 +129,8 @@ encoder = Encoder()
 for i in range(10):
     ug = UserGameText()
     
+    roundCounter = 0
+    
     while not ug.game.checkMatchWin():
         ug.game.startRound()
         ug.printRoundInfo()
@@ -136,25 +138,29 @@ for i in range(10):
         computer1 = Computer(ug.game.player1, ug.game)
         computer2 = Computer(ug.game.player2, ug.game)
         
+        turnCounter = 0
+        
         while not ug.game.checkRoundWin():
             if ug.game.turn == 1:
-                encoder.recordTurnStartData(ug.game)
+                encoder.recordTurnStartData(ug.game, turnCounter)
                 ug.printTurn(ug.game.player1)
                 ug.inputTurnComp(ug.game.player1, computer1)
-                encoder.recordTurnEndData(ug.game)
+                encoder.recordTurnEndData(ug.game, turnCounter)
             else:
-                encoder.recordTurnStartData(ug.game)
+                encoder.recordTurnStartData(ug.game, turnCounter)
                 ug.printTurn(ug.game.player2)
                 ug.inputTurnComp(ug.game.player2, computer2)
-                
-                encoder.recordTurnEndData(ug.game)
+                encoder.recordTurnEndData(ug.game, turnCounter)
             if ug.game.isTie():
                 print("Neither player can draw or place any tiles therefore this round is a tie.")
                 break
             ug.game.skipTurn()
+            turnCounter += 1
             
-        encoder.recordRoundData(ug.game)
-    encoder.recordMatchData(ug.game)
+        encoder.recordRoundData(ug.game, roundCounter)
+        roundCounter += 1
+        
+    encoder.recordMatchData(ug.game, i)
 
 encoder.saveDfToCSV(encoder.matchDf, 'match.csv')
 encoder.saveDfToCSV(encoder.roundDf, 'round.csv')

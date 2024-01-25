@@ -56,31 +56,17 @@ class Encoder:
         self.turnEndDf = pd.DataFrame()
     
     
-    def encodeTile(self, tile: Tile) -> EncodedTile:
+    def encodeTile(self, tile: Tile):
         """Encode a Tile.
         E.g. Tile(1, 2), orientation => '1|2'
-
-        Args:
-            tile (Tile): The Tile to encode.
-
-        Returns:
-            EncodedTile: EncodedTile object containing the original pip values and the 
-            encoded string.
         """
         
         return "{}|{}".format(tile.pip1, tile.pip2)
     
     
-    def encodeSnakeLayout(self, snake: Snake, split=" ") -> EncodedSnake:
+    def encodeSnakeLayout(self, snake: Snake, split=" "):
         """Encode a Snake's dict contents.
         E.g. {-1: Tile(1, 2), 0: Tile(2, 3), 1: Tile(3, 4)} => "-1:1|2 0:2|3 1:3|4"
-
-        Args:
-            snake (Snake): The Snake object to encode.
-
-        Returns:
-            EncodedSnake: EncodedSnake object containing the original snake dict value and 
-            the encoded string.
         """
         
         encoded = []
@@ -113,7 +99,7 @@ class Encoder:
         return split.join(encoded)
     
     
-    def recordMatchData(self, game: Game):
+    def recordMatchData(self, game: Game, matchId: int):
         '''
         - First player
         - Players total draw count
@@ -123,6 +109,7 @@ class Encoder:
         
         matchData = {}
         
+        matchData["matchId"] = matchId
         matchData["initialTurn"] = game.initialTurn
         matchData["player1DrawCount"] = game.playerDrawCountsTotal['1']
         matchData["player2DrawCount"] = game.playerDrawCountsTotal['2']
@@ -135,7 +122,7 @@ class Encoder:
         self.matchDf = pd.concat([self.matchDf, row], ignore_index=True)
     
     
-    def recordRoundData(self, game: Game):
+    def recordRoundData(self, game: Game, roundId: int):
         '''
         - Each player's points at the end of each round
         - The initial piece played
@@ -145,6 +132,7 @@ class Encoder:
         roundData = {}
         
         # When writing to csv, 'initialTurn' turns into 'NoneialTurn'???
+        roundData["roundId"] = roundId
         roundData["initialTurn"] = game.initialTurn
         roundData["player1Points"] = game.player1.points
         roundData["player2Points"] = game.player2.points
@@ -156,7 +144,7 @@ class Encoder:
         self.roundDf = pd.concat([self.roundDf, row], ignore_index=True)
         
     
-    def recordTurnStartData(self, game: Game):
+    def recordTurnStartData(self, game: Game, turnId: int):
         '''
         - The player turn
         - The deck contents
@@ -167,6 +155,7 @@ class Encoder:
         turnStartData = {}
         
         # When saving to CSV, 'playerTurn' turns into NoneerTurn???
+        turnStartData["turnId"] = turnId
         turnStartData["playerTurn"] = game.turn
         turnStartData["deckContents"] = self.encodeDeckContents(game.deck)
         turnStartData["player1Hand"] = self.encodeHandContents(game.player1)
@@ -177,7 +166,7 @@ class Encoder:
         self.turnStartDf = pd.concat([self.turnStartDf, row], ignore_index=True)
     
     
-    def recordTurnEndData(self, game: Game):
+    def recordTurnEndData(self, game: Game, turnId: int):
         '''
         - The player turn
         - The deck contents
@@ -189,6 +178,7 @@ class Encoder:
 
         turnEndData = {}
 
+        turnEndData["turnId"] = turnId
         turnEndData["playerTurn"] = game.turn
         turnEndData["deckContents"] = self.encodeDeckContents(game.deck)
         turnEndData["player1Hand"] = self.encodeHandContents(game.player1)

@@ -15,6 +15,25 @@ Block dominoes:
 Reinforcement learning model
 
 
-Board:
-    - Domino snake adds items from 'center' 
-    - 
+States:
+    - 1 Able to place tile
+    - 2 Needing to draw tile
+    - 3 Needing to skip
+Actions:
+    - Placing a tile
+    - Drawing a tile
+    - Skipping turn
+Reward function: 
+    Positives:
+        placing a tile: +1,
+        blocking opponent: +5,
+        winning a round: +10
+    Negatives:
+        drawing a tile: -1,
+        skipping a turn: -5,
+        losing a round: -10
+
+    place   draw    skip
+1   
+2   
+3   
